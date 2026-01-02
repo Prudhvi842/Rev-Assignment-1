@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+  
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    .fail {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -19,7 +35,7 @@
   <p id="topper"></p>
 
   <h2>Student Table</h2>
-  <table border="1">
+  <table>
     <thead>
       <tr>
         <th>Name</th>
@@ -40,7 +56,7 @@
   <ul id="sortedList"></ul>
 
   <script>
-    // GIVEN DATA
+    // GIVEN DATA (FIRST 5)
     let students = [
       { id: 1, name: "Amit", marks: 78, department: "CSE" },
       { id: 2, name: "Priya", marks: 92, department: "ECE" },
@@ -49,7 +65,7 @@
       { id: 5, name: "Kiran", marks: 88, department: "ECE" }
     ];
 
-    //  Display all student names
+    /*  Display all student names */
     let studentList = document.getElementById("studentList");
     students.forEach(s => {
       let li = document.createElement("li");
@@ -57,7 +73,7 @@
       studentList.appendChild(li);
     });
 
-    //  Students with marks > 60
+    /* Display students with marks > 60 */
     let passList = document.getElementById("passList");
     students.filter(s => s.marks > 60).forEach(s => {
       let li = document.createElement("li");
@@ -65,7 +81,7 @@
       passList.appendChild(li);
     });
 
-    // Count students per department
+    /*  Count students in each department */
     let deptCount = students.reduce((acc, s) => {
       acc[s.department] = (acc[s.department] || 0) + 1;
       return acc;
@@ -78,21 +94,33 @@
       deptUl.appendChild(li);
     }
 
-    //  Highest marks
+    /*  Find highest marks */
     let topper = students.reduce((max, s) =>
       s.marks > max.marks ? s : max
     );
     document.getElementById("topper").textContent =
       `${topper.name} (${topper.marks})`;
 
-  
+    /*  Display students in table */
+    let tableBody = document.getElementById("studentTable");
+    students.forEach(s => {
+      let row = document.createElement("tr");
+      if (s.marks < 50) row.classList.add("fail");
 
-    //  Average marks
+      row.innerHTML = `
+        <td>${s.name}</td>
+        <td>${s.marks}</td>
+        <td>${s.department}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    /*  Average marks */
     let totalMarks = students.reduce((sum, s) => sum + s.marks, 0);
     let average = (totalMarks / students.length).toFixed(2);
     document.getElementById("average").textContent = average;
 
-    // Only CSE students
+    /*  Display only CSE students */
     let cseList = document.getElementById("cseList");
     students.filter(s => s.department === "CSE").forEach(s => {
       let li = document.createElement("li");
@@ -100,7 +128,7 @@
       cseList.appendChild(li);
     });
 
-    //  Sort by marks descending
+    /*  Sort by marks descending */
     let sortedList = document.getElementById("sortedList");
     [...students].sort((a, b) => b.marks - a.marks).forEach(s => {
       let li = document.createElement("li");
@@ -108,13 +136,23 @@
       sortedList.appendChild(li);
     });
 
-    
+    /* Add new student & update list */
+    students.push({
+      id: 6,
+      name: "Ramesh",
+      marks: 49,
+      department: "CSE"
+    });
 
-  
+    let newLi = document.createElement("li");
+    newLi.textContent = "Ramesh (Added)";
+    if (49 < 50) newLi.classList.add("fail");
+    studentList.appendChild(newLi);
   </script>
 
 </body>
 </html>
+
 
 
 
